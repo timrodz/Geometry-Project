@@ -1,6 +1,4 @@
 #include <iostream>
-
-//#include "geometry.h"
 #include "test.h"
 
 int main() {
@@ -14,6 +12,7 @@ int main() {
 	testCrossProduct();
 	testNormalise();
 	testProjection();
+	// Not yet done
 	testComputeAngleBetween2D();
 	testComputeAngleBetween3D();
 	testComputeDistancePointToLine();
@@ -21,7 +20,10 @@ int main() {
 	testComputeDistancePointToSphere();
 	testComputeDistanceCircleToCircle();
 	testComputeDistanceCircleToTriangle();
+	// Not yet done
 	testComputeLineSphereIntersection();
+	testIsLinePlaneIntersection();
+	testIsIntersection();
 
 	std::cout << "\nPress ENTER/RETURN to exit";
 	std::cin.get();
