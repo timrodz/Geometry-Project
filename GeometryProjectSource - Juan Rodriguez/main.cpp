@@ -12,7 +12,6 @@ int main() {
 	testCrossProduct();
 	testNormalise();
 	testProjection();
-	// Not yet done
 	testComputeAngleBetween2D();
 	testComputeAngleBetween3D();
 	testComputeDistancePointToLine();
@@ -20,13 +19,18 @@ int main() {
 	testComputeDistancePointToSphere();
 	testComputeDistanceCircleToCircle();
 	testComputeDistanceCircleToTriangle();
-	// Not yet done
 	testComputeLineSphereIntersection();
 	testIsLinePlaneIntersection();
 	testIsIntersection();
+	testComputeIntersectionBetweenLines();
+	testIsInFieldOfView();
+	testIsSurfaceLit();
+	testFindTriangleNormal();
+	testRotateTriangleAroundPoint();
 
-	std::cout << "\nPress ENTER/RETURN to exit";
+	std::cout << "Press ENTER/RETURN to exit";
 	std::cin.get();
 
 	return 0;
+
 }
