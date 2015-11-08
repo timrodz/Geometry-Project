@@ -1,4 +1,3 @@
-#include <iostream>
 #include "test.h"
 
 int main() {
@@ -27,7 +26,7 @@ int main() {
 	testIsSurfaceLit();
 	testFindTriangleNormal();
 	testRotateTriangleAroundPoint();
-
+	setColor(WHITE);
 	std::cout << "Press ENTER/RETURN to exit";
 	std::cin.get();
 

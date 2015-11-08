@@ -89,9 +89,9 @@ TVector3& ScaleVector(const TVector3& _krA,
 ********************/
 float Magnitude(const TVector3& _krA) {
 
-	float magnitude = sqrt(pow(_krA.m_fX, 2) + pow(_krA.m_fY, 2) + pow(_krA.m_fZ, 2));
+	float fMagnitude = sqrt(pow(_krA.m_fX, 2) + pow(_krA.m_fY, 2) + pow(_krA.m_fZ, 2));
 		
-	return (magnitude);
+	return (fMagnitude);
 
 }
 
@@ -104,9 +104,9 @@ float Magnitude(const TVector3& _krA) {
 ********************/
 float DotProduct(const TVector3& _krA, const TVector3& _krB) {
 
-	float dotProduct = (_krA.m_fX * _krB.m_fX) + (_krA.m_fY * _krB.m_fY) + (_krA.m_fZ * _krB.m_fZ);
+	float fDotProduct = (_krA.m_fX * _krB.m_fX) + (_krA.m_fY * _krB.m_fY) + (_krA.m_fZ * _krB.m_fZ);
 
-	return (dotProduct);
+	return (fDotProduct);
 
 }
 
@@ -176,13 +176,16 @@ TVector3& Projection(const TVector3& _krA,
 float ComputeAngleBetween(const TVector2& _krA,
 	const TVector2& _krB) {
 
-	float dotProduct = (_krA.m_fX * _krB.m_fX) + (_krA.m_fY * _krB.m_fY);
-	float magnitude_krA = sqrt(pow(_krA.m_fX, 2) + pow(_krA.m_fY, 2));
-	float magnitude_krB = sqrt(pow(_krB.m_fX, 2) + pow(_krB.m_fY, 2));
+	// Dot product
+	float fDotProduct = (_krA.m_fX * _krB.m_fX) + (_krA.m_fY * _krB.m_fY);
+	// Magnitude of _krA
+	float fMagnitude_krA = sqrt(pow(_krA.m_fX, 2) + pow(_krA.m_fY, 2));
+	// Magnitude of _krB
+	float fMagnitude_krB = sqrt(pow(_krB.m_fX, 2) + pow(_krB.m_fY, 2));
 
-	return (
-			acos(dotProduct / (magnitude_krA * magnitude_krB))
-		);
+	float fAngle = acosf(fDotProduct / (fMagnitude_krA * fMagnitude_krB));
+
+	return (fAngle);
 
 }
 
@@ -197,9 +200,9 @@ float ComputeAngleBetween(const TVector3& _krA,
 	const TVector3& _krB) {
 
 	// Since we've two 3D vectors, we recall the DotProduct and Magnitude functions that were previously created
-	return (
-			acos(DotProduct(_krA, _krB) / (Magnitude(_krA) * Magnitude(_krB)))
-		);
+	float fAngle = acosf(DotProduct(_krA, _krB) / (Magnitude(_krA) * Magnitude(_krB)));
+
+	return (fAngle);
 
 }
 
@@ -213,15 +216,15 @@ float ComputeAngleBetween(const TVector3& _krA,
 float ComputeDistancePointToLine(const T3DLine& _krLine,
 	const TVector3& _krPoint) {
 
-	TVector3 vector;
-	TVector3 crossP;
+	TVector3 tVector;
+	TVector3 tCrossP;
 
-	vector = Subtract(_krPoint, _krLine.m_v3q, vector);
-	crossP = CrossProduct(vector, _krLine.m_v3v, crossP);
+	tVector = Subtract(_krPoint, _krLine.m_v3q, tVector);
+	tCrossP = CrossProduct(tVector, _krLine.m_v3v, tCrossP);
 
-	return (
-			Magnitude(crossP) / Magnitude(_krLine.m_v3v)
-		);
+	float fDistance = Magnitude(tCrossP) / Magnitude(_krLine.m_v3v);
+
+	return (fDistance);
 
 }
 
@@ -235,15 +238,15 @@ float ComputeDistancePointToLine(const T3DLine& _krLine,
 float ComputeDistancePointToPlane(const TPlane& _krPlane,
 	const TVector3& _krPoint) {
 
-	TVector3 vector;
-	TVector3 proj;
+	TVector3 tVector;
+	TVector3 tProjection;
 
-	vector = Subtract(_krPoint, _krPlane.m_v3point, vector);
-	proj = Projection(vector, _krPlane.m_v3normal, proj);
+	tVector = Subtract(_krPoint, _krPlane.m_v3point, tVector);
+	tProjection = Projection(tVector, _krPlane.m_v3normal, tProjection);
 
-	float distance = Magnitude(proj);
+	float fDistance = Magnitude(tProjection);
 
-	return (distance);
+	return (fDistance);
 
 }
 
@@ -259,14 +262,14 @@ float ComputeDistancePointToSphere(const TSphere& _krSphere,
 	const TVector3& _krPoint) {
 
 	// Square root of the components except the radius
-	float SQRT = sqrt(pow(_krSphere.m_v3center.m_fX - _krPoint.m_fX, 2) +
+	float fSquareRoot = sqrt(pow(_krSphere.m_v3center.m_fX - _krPoint.m_fX, 2) +
 		pow(_krSphere.m_v3center.m_fY - _krPoint.m_fY, 2) +
 		pow(_krSphere.m_v3center.m_fZ - _krPoint.m_fZ, 2));
 
 	// We subtract the radius and, if it's a negative value, make it positive
-	float distance = abs(SQRT - _krSphere.m_fRadius);
+	float fDistance = abs(fSquareRoot - _krSphere.m_fRadius);
 
-	return (distance);
+	return (fDistance);
 
 }
 
@@ -281,13 +284,13 @@ float ComputeDistanceCircleToCircle(const TCircle& _krCircle1,
 	const TCircle& _krCircle2) {
 
 	// Square root of the components except the radius
-	float distance = sqrt(pow(_krCircle1.m_v2center.m_fX - _krCircle2.m_v2center.m_fX, 2) +
+	float fDistance = sqrt(pow(_krCircle1.m_v2center.m_fX - _krCircle2.m_v2center.m_fX, 2) +
 		pow(_krCircle1.m_v2center.m_fY - _krCircle2.m_v2center.m_fY, 2));
 
 	// The difference between the two radiuses
-	float deltaR = _krCircle2.m_fRadius - _krCircle1.m_fRadius;
+	float fRadiusDifference = _krCircle2.m_fRadius - _krCircle1.m_fRadius;
 
-	return (distance - deltaR);
+	return (fDistance - fRadiusDifference);
 
 }
 
@@ -302,18 +305,18 @@ float ComputeDistanceCircleToTriangle(const TCircle& _krCircle,
 	const TTriangle2& _krTriangle) {
 
 	// Horizontal center of the triangle
-	float triangleCentroidX = (_krTriangle.m_v2p1.m_fX + _krTriangle.m_v2p2.m_fX + _krTriangle.m_v2p3.m_fX) / 3;
+	float fTriangleCentroidX = (_krTriangle.m_v2p1.m_fX + _krTriangle.m_v2p2.m_fX + _krTriangle.m_v2p3.m_fX) / 3;
 
 	// Vertical center of the triangle
-	float triangleCentroidY = (_krTriangle.m_v2p1.m_fY + _krTriangle.m_v2p2.m_fY + _krTriangle.m_v2p3.m_fY) / 3;
+	float fTriangleCentroidY = (_krTriangle.m_v2p1.m_fY + _krTriangle.m_v2p2.m_fY + _krTriangle.m_v2p3.m_fY) / 3;
 
 	// Square root of the center of the circle minus the center of the triangle
-	float SQRT = sqrt(pow(_krCircle.m_v2center.m_fX - triangleCentroidX, 2) + 
-				      pow(_krCircle.m_v2center.m_fY - triangleCentroidY, 2));
+	float fSquareRoot = sqrt(pow(_krCircle.m_v2center.m_fX - fTriangleCentroidX, 2) + 
+				      pow(_krCircle.m_v2center.m_fY - fTriangleCentroidY, 2));
 
-	float distance = abs(SQRT - _krCircle.m_fRadius);
+	float fDistance = abs(fSquareRoot - _krCircle.m_fRadius);
 
-	return (distance);
+	return (fDistance);
 
 }
 
@@ -525,11 +528,12 @@ TVector3& ComputeIntersectionBetweenLines(const T3DLine& _krLine1,
 	float l2y1 = _krLine2.m_v3v.m_fY;
 	float l2z1 = _krLine2.m_v3v.m_fZ;
 
-	float d = l1x0 + l1x1 - (l2x0 + l2x1);
+	// The value 't' for the formula: r(t) = q + t(v)
+	float t = l1x0 + l1x1 - (l2x0 + l2x1);
 
-	_rIntersectionPoint.m_fX = l1x0 + (d * l1x1);
-	_rIntersectionPoint.m_fY = l1y0 + (d * l1y1);
-	_rIntersectionPoint.m_fZ = l1z0 + (d * l1z1);
+	_rIntersectionPoint.m_fX = l1x0 + (t * l1x1);
+	_rIntersectionPoint.m_fY = l1y0 + (t * l1y1);
+	_rIntersectionPoint.m_fZ = l1z0 + (t * l1z1);
 
 	return _rIntersectionPoint;
 
@@ -550,46 +554,47 @@ bool IsInFieldOfView(const TVector2& _krCameraPosition,
 	const TVector2& _krObjectPosition) {
 
 	// Normalised vectors
-	TVector2 cameraDirectionNormalised;
-	TVector2 vectorObjCameraPosNormalised;
+	TVector2 tCameraDirectionNormalised;
+	TVector2 tVectorObjCameraPosNormalised;
 
 	// Magnitude of our vectors (not yet normalised)
-	float cameraDirectionMagnitude;
-	float vectorObjCameraPosMagnitude;
+	float fCameraDirectionMagnitude;
+	float fVectorObjCameraPosMagnitude;
 
 	// Dot product of our two normalised vectors
-	float normalisedVectorDotProduct;
+	float fNormalisedVectorDotProduct;
 
 	// Vector from the object to the position of the camera
-	TVector2 vectorCameraPosObject;
+	TVector2 tVectorCameraPosObject;
 
-	float angle;
+	float fAngleBetweenCameraAndObject;
 	
 	// Vector from the camera position to the object
-	vectorCameraPosObject.m_fX = _krObjectPosition.m_fX - _krCameraPosition.m_fX;
-	vectorCameraPosObject.m_fY = _krObjectPosition.m_fY - _krCameraPosition.m_fY;
+	tVectorCameraPosObject.m_fX = _krObjectPosition.m_fX - _krCameraPosition.m_fX;
+	tVectorCameraPosObject.m_fY = _krObjectPosition.m_fY - _krCameraPosition.m_fY;
 
 	// Magnitude of our direction and object to camera position vectors
-	cameraDirectionMagnitude = sqrt(pow(_krCameraDirection.m_fX, 2) + pow(_krCameraDirection.m_fY, 2));
-	vectorObjCameraPosMagnitude = sqrt(pow(vectorCameraPosObject.m_fX, 2) + pow(vectorCameraPosObject.m_fY, 2));
+	fCameraDirectionMagnitude = sqrt(pow(_krCameraDirection.m_fX, 2) + pow(_krCameraDirection.m_fY, 2));
+	fVectorObjCameraPosMagnitude = sqrt(pow(tVectorCameraPosObject.m_fX, 2) + pow(tVectorCameraPosObject.m_fY, 2));
 
 	// Our normalised vectors
-	cameraDirectionNormalised.m_fX = _krCameraDirection.m_fX / cameraDirectionMagnitude;
-	cameraDirectionNormalised.m_fY = _krCameraDirection.m_fY / cameraDirectionMagnitude;
+	tCameraDirectionNormalised.m_fX = _krCameraDirection.m_fX / fCameraDirectionMagnitude;
+	tCameraDirectionNormalised.m_fY = _krCameraDirection.m_fY / fCameraDirectionMagnitude;
 
-	vectorObjCameraPosNormalised.m_fX = vectorCameraPosObject.m_fX / vectorObjCameraPosMagnitude;
-	vectorObjCameraPosNormalised.m_fY = vectorCameraPosObject.m_fY / vectorObjCameraPosMagnitude;
+	tVectorObjCameraPosNormalised.m_fX = tVectorCameraPosObject.m_fX / fVectorObjCameraPosMagnitude;
+	tVectorObjCameraPosNormalised.m_fY = tVectorCameraPosObject.m_fY / fVectorObjCameraPosMagnitude;
 	
 	// Recalling from the formula of dot product, we proceed to get the dot product of our normalised vectors
-	normalisedVectorDotProduct = (cameraDirectionNormalised.m_fX * vectorObjCameraPosNormalised.m_fX) +
-		(cameraDirectionNormalised.m_fY * vectorObjCameraPosNormalised.m_fY);
+	fNormalisedVectorDotProduct = (tCameraDirectionNormalised.m_fX * tVectorObjCameraPosNormalised.m_fX) +
+		(tCameraDirectionNormalised.m_fY * tVectorObjCameraPosNormalised.m_fY);
 
 	// then apply with the form of:
-	// 0 = acos(D' * V')
-	angle = acos(normalisedVectorDotProduct);
+	// 0 = acosf(D' * V')
+	fAngleBetweenCameraAndObject = acosf(fNormalisedVectorDotProduct);
 
 	// If our angle is greater than half of our field of view, the object isn't visible
-	if (angle > _kfFieldOfViewInRadians / 2) {
+	// source: http://blog.wolfire.com/2009/07/linear-algebra-for-game-developers-part-2/
+	if (fAngleBetweenCameraAndObject > _kfFieldOfViewInRadians / 2) {
 
 		return false;
 
@@ -615,25 +620,46 @@ bool IsSurfaceLit(const TVector3& _krPointOnSurface,
 	const TVector3& _krLightSourcePosition,
 	const TTriangle3& _krSurface) {
 	
-	/*
-	Got the surface normal of the triangle. 
-	Then got the vector from the light source to the point on the surface.
-	Then compared the direction of the two to check if the light source is in front of or behind the triangle. 
-	Not sure if it's right, it's the best I could think of.
-	*/
+	// Knowing how much percentage of light has hit our surface
+	float fPercentageOfLightingInSurface;
+	// For storing the direction between the light and the surface normal
+	float fAngleBetweenLightAndSurface;
+	// For easier calculations
+	TVector3 tNormalisedLightDirection;
+	TVector3 tNormalisedSurfaceNormal;
+	// Direction of the light
+	TVector3 tLightDirection;
+	// The surface normal
+	TVector3 tSurfaceNormal;
 
-	TVector3 N; // Normal
-	N = FindTriangleNormal(_krSurface, N);
-
-	TVector3 vectorLightPointOnSurface;
+	// Determining the normal from our surface
+	tSurfaceNormal = FindTriangleNormal(_krSurface, tSurfaceNormal);
 
 	// Making a vector from the light source to the point on the surface
-	vectorLightPointOnSurface = Subtract(_krPointOnSurface, _krLightSourcePosition, vectorLightPointOnSurface);
+	tLightDirection = Subtract(_krPointOnSurface, _krLightSourcePosition, tLightDirection);
 
+	tNormalisedLightDirection = Normalise(tLightDirection, tLightDirection);
+	tNormalisedSurfaceNormal = Normalise(tSurfaceNormal, tSurfaceNormal);
 
+	// Angle between the light direction vector and the surface normal, both normalised so we don't use magnitudes
+	fAngleBetweenLightAndSurface = acosf(DotProduct(tNormalisedLightDirection, tNormalisedSurfaceNormal));
+
+	// Knowing how much percent of lighting has actually struck our surface
+	fPercentageOfLightingInSurface = cosf(fAngleBetweenLightAndSurface);
 	
-	return false;
+	// If there's more than 1 percent, it means at least a little bit of light has hit the surface
+	// source: https://www.tjhsst.edu/~dhyatt/supercomp/n310.html
+	if (fPercentageOfLightingInSurface > 0) {
 
+		return true;
+
+	}
+	else {
+
+		return false;
+
+	}
+		
 }
 
 /***********************
@@ -647,9 +673,6 @@ bool IsSurfaceLit(const TVector3& _krPointOnSurface,
 ********************/
 TVector3& FindTriangleNormal(const TTriangle3& _krTriangle,
 	TVector3& _rNormal) {
-
-	TVector3 V; // P2 - P1
-	TVector3 W; // P3 - P1
 
 	// First point 
 	TVector3 P1;
@@ -669,17 +692,16 @@ TVector3& FindTriangleNormal(const TTriangle3& _krTriangle,
 	P3.m_fY = _krTriangle.m_v3p3.m_fY;
 	P3.m_fZ = _krTriangle.m_v3p3.m_fZ;
 
+	TVector3 V; // P2 - P1
+	TVector3 W; // P3 - P1
+
 	// V = P2 - P1
-	V.m_fX = Subtract(P2, P1, V).m_fX;
-	V.m_fY = Subtract(P2, P1, V).m_fY;
-	V.m_fZ = Subtract(P2, P1, V).m_fZ;
+	V = Subtract(P2, P1, V);
 		
 	// W = P3 - P1
-	W.m_fX = Subtract(P3, P1, W).m_fX;
-	W.m_fY = Subtract(P3, P1, W).m_fY;
-	W.m_fZ = Subtract(P3, P1, W).m_fZ;
+	W = Subtract(P3, P1, W);
 
-	// _rNormal = V x W
+	// _rNormal = V x W (x: cross product)
 	_rNormal = CrossProduct(V, W, _rNormal);
 
 	return _rNormal;
@@ -729,18 +751,21 @@ TTriangle2& RotateTriangleAroundPoint(const TTriangle2& _krTriangle,
 	// Rotating the first point
 	rx = x1 * cosf(_kfRotAngleInRadians / 180.0f * float(M_PI)) - y1 * sinf(_kfRotAngleInRadians / 180.0f * float(M_PI));
 	ry = y1 * cosf(_kfRotAngleInRadians / 180.0f * float(M_PI)) + x1 * sinf(_kfRotAngleInRadians / 180.0f * float(M_PI));
+	// We proceed to add the rotated values to our point
 	x1 += rx;
 	y1 += ry;
 
 	// Rotating the second point
 	rx = x2 * cosf(_kfRotAngleInRadians / 180.0f * float(M_PI)) - y2 * sinf(_kfRotAngleInRadians / 180.0f * float(M_PI));
 	ry = y2 * cosf(_kfRotAngleInRadians / 180.0f * float(M_PI)) + x2 * sinf(_kfRotAngleInRadians / 180.0f * float(M_PI));
+	// We proceed to add the rotated values to our point
 	x2 += rx;
 	y2 += ry;
 
 	// Rotating the third point
 	rx = x3 * cosf(_kfRotAngleInRadians / 180.0f * float(M_PI)) - y3 * sinf(_kfRotAngleInRadians / 180.0f * float(M_PI));
 	ry = y3 * cosf(_kfRotAngleInRadians / 180.0f * float(M_PI)) + x3 * sinf(_kfRotAngleInRadians / 180.0f * float(M_PI));
+	// We proceed to add the rotated values to our point
 	x3 += rx;
 	y3 += ry;
 
