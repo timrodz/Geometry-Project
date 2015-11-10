@@ -11,8 +11,12 @@
 ********************/
 bool Equals(const TVector3& _krA, const TVector3& _krB) {
 
+	bool xDifference = fabs(_krA.m_fX - _krB.m_fX) < (0.00001 + fabs(_krA.m_fX - _krB.m_fX));
+	bool yDifference = fabs(_krA.m_fY - _krB.m_fY) < (0.00001 + fabs(_krA.m_fY - _krB.m_fY));
+	bool zDifference = fabs(_krA.m_fZ - _krB.m_fZ) < (0.00001 + fabs(_krA.m_fZ - _krB.m_fZ));
+
 	// Checks if every component of the vector is equal, if all XYZ are, return true
-	if ((_krA.m_fX == _krB.m_fX) && (_krA.m_fY == _krB.m_fY) && (_krA.m_fZ == _krB.m_fZ)) {
+	if (xDifference && yDifference && zDifference) {
 		return true;
 	}
 	else {

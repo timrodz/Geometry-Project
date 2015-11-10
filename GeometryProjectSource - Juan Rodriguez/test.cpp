@@ -11,7 +11,7 @@ void testEquals() {
 	bool result;
 
 	V1 = {
-		4.0000001f, 7, 3
+		4.000001f, 7, 3
 	};
 
 	V2 = {
@@ -983,7 +983,6 @@ void testIsSurfaceLit() {
 	TVector3 pointOnSurface;
 	TVector3 lightSource;
 	TTriangle3 surface;
-
 
 	pointOnSurface = {
 		3, 5, 2
