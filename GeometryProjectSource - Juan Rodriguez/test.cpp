@@ -684,9 +684,9 @@ void testComputeDistanceCircleToTriangle() {
 	triangleCenterX = (triangle.m_v2p1.m_fX + triangle.m_v2p2.m_fX + triangle.m_v2p3.m_fX) / 3;
 	triangleCenterY = (triangle.m_v2p1.m_fY + triangle.m_v2p2.m_fY + triangle.m_v2p3.m_fY) / 3;
 
-	SQRT = sqrt(pow(circle.m_v2center.m_fX - triangleCenterX, 2) + pow(circle.m_v2center.m_fY - triangleCenterY, 2));
+	result = sqrt(pow(circle.m_v2center.m_fX - triangleCenterX, 2) + pow(circle.m_v2center.m_fY - triangleCenterY, 2));
 
-	result = abs(SQRT - circle.m_fRadius);
+	//result = abs(SQRT - circle.m_fRadius);
 
 	expectedResult = ComputeDistanceCircleToTriangle(circle, triangle);
 

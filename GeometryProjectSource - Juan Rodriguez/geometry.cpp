@@ -315,10 +315,8 @@ float ComputeDistanceCircleToTriangle(const TCircle& _krCircle,
 	float fTriangleCentroidY = (_krTriangle.m_v2p1.m_fY + _krTriangle.m_v2p2.m_fY + _krTriangle.m_v2p3.m_fY) / 3;
 
 	// Square root of the center of the circle minus the center of the triangle
-	float fSquareRoot = sqrt(pow(_krCircle.m_v2center.m_fX - fTriangleCentroidX, 2) + 
+	float fDistance = sqrt(pow(_krCircle.m_v2center.m_fX - fTriangleCentroidX, 2) + 
 				      pow(_krCircle.m_v2center.m_fY - fTriangleCentroidY, 2));
-
-	float fDistance = abs(fSquareRoot - _krCircle.m_fRadius);
 
 	return (fDistance);
 
@@ -487,9 +485,11 @@ bool IsIntersection(const T3DLine& _krLine1,
 	float l2y1 = _krLine2.m_v3v.m_fY;
 	float l2z1 = _krLine2.m_v3v.m_fZ;
 
-	float d = l1x0 + l1x1 - (l2x0 + l2x1);
+	// The parameter t of the line formula
+	// Since only one component is needed to get its value, I use x.	
+	float t = l1x0 + l1x1 - (l2x0 + l2x1);
 
-	if (d > 0) {
+	if (t > 0) {
 
 		return true;
 
